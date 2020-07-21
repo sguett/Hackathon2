@@ -6,45 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <title>all projects</title>
     <style>
-        .container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: minmax(100px, auto);
-            grid-gap: 10px;
-            margin-top: 20px;
-            margin-left: 80px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            width: auto;
+        }
+
+
+        .cardsProjects {
+            margin-left: 70px;
+            margin-right: 80px;
         }
 
         .actions {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: 2fr 1fr;
             grid-auto-rows: minmax(60px, auto);
             margin-left: 80px;
+            margin-right: 80px;
             margin-top: 30px;
+        }
+
+        .card-text {
+            font-size: 85%;
+        }
+
+        .btn {
+            background-color: #31AABB;
+            border: #31AABB;
         }
     </style>
 </head>
 
 <body>
     <!-- BEGIN NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-        <a class="navbar-brand" href="#" style="margin-left: 50px;"><b>The Volunteers</b></a>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #31AABB;">
+        <a class="navbar-brand" href="#" style="margin-left: 50px;color: white;"><b>The Volunteers</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav" style="margin-right: 100px;">
+        <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav" style="margin-right: 70px;">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">My contributions <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: white;">My contributions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My projects</a>
+                    <a class="nav-link" href="#" style="color: white;">My projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Settings</a>
+                    <a class="nav-link" href="#" style="color: white;">Settings</a>
                 </li>
             </ul>
         </div>
@@ -53,7 +66,7 @@
     <!-- BEGIN FILTERS AND BUTTON ADD PROJECT -->
     <div class="actions">
         <div>
-            <label for="localisation">Localisaton</label>
+            <label for="localisation">Localisation</label>
             <select name="localisation" id="localisation">
                 <option value="all">All</option>
                 <option value="africa">Africa</option>
@@ -63,9 +76,7 @@
                 <option value="south america">South America</option>
                 <option value="other">Other</option>
             </select>
-        </div>
-        <div>
-            <label for="status">Status projects</label>
+            <label for="status" style="margin-left: 10px;">Status projects</label>
             <select name="status" id="status">
                 <option value="all">All</option>
                 <option value="open">Open</option>
@@ -74,76 +85,99 @@
             </select>
         </div>
         <div>
-            <button type="button" class="btn btn-primary btn-sm" id="newProject" style>Create a new project</button>
+            <button type="button" onclick="location.href='createProject.html';" class="btn btn-primary btn-sm"
+                id="newProject" style="margin-left: 195px;">Create
+                a new project</button>
         </div>
     </div>
     <!-- END FILTERS AND BUTTON ADD PROJECT -->
     <!-- BEGIN CARDS PROJECTS -->
-    <div class="container">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+    <div class="row row-cols-1 row-cols-md-3 cardsProjects">
+        <div class="col mb-4">
+            <div class="card">
+                <img src="../ressources/anna-earl-J-Jb1niw1j0-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="moreInfo">More
+                        info</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="join">Join!</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="donate">Donate!</button>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="../ressources/larm-rmah-AEaTUnvneik-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div>
+                        <h5 class="card-title">Card title</h5>
+                        <!-- <p>23 Volunteers</p> -->
+                    </div>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="moreInfo">More
+                        info</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="join">Join!</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="donate">Donate!</button>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="../ressources/ray-sangga-kusuma-7uSrOyY1U0I-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="moreInfo">More
+                        info</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="join">Join!</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="donate">Donate!</button>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="../ressources/joel-muniz-y3ZY6qFln_g-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="moreInfo">More
+                        info</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="join">Join!</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="donate">Donate!</button>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="../ressources/timothy-eberly-iSmLxCzkoH0-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="moreInfo">More
+                        info</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="join">Join!</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="donate">Donate!</button>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="../ressources/kenan-kitchen-LRu2JPt1yD0-unsplash.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="moreInfo">More
+                        info</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="join">Join!</button>
+                    <button type="button" class="btn btn-primary btn-sm" class="card-link" id="donate">Donate!</button>
+                </div>
             </div>
         </div>
     </div>
