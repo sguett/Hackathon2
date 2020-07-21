@@ -1,0 +1,30 @@
+{
+  "name": "humanitarian-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sguett/Hackathon2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sguett/Hackathon2/issues"
+  },
+  "homepage": "https://github.com/sguett/Hackathon2#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.2",
+    "p4ssw0rd": "^1.0.4",
+    "pg": "^8.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

@@ -1,0 +1,45 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+#root{
+    background-image: url('../ressources/perry-grone-lbLgFFlADrY-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* margin-top: 80px; */
+    text-align: center;
+    font-size: larger;
+    opacity: 0.9;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1; 
+}
+
+#loginRegister {
+    display: flex;
+    justify-content: center;
+    margin-top: 150px;
+}
+
+input {
+    width: 330px;
+    height: 25px;
+}
+
+button {
+    width: 338px;
+    height: 25px;
+}
+
+
+#lostPassword{
+    margin-top: 10px;
+}
+
+#lostPassword:hover{
+    cursor: pointer;
+}
