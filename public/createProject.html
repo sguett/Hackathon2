@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="addProject.js"></script>
     <title>create project</title>
     <style>
         body {
@@ -19,7 +20,8 @@
 <body>
     <!-- BEGIN NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #31AABB;">
-        <a class="navbar-brand" href="#" style="margin-left: 50px;color: white;"><b>The Volunteers</b></a>
+        <a class="navbar-brand" href="AllProjects.html" style="margin-left: 50px;color: white;"><b>The
+                Volunteers</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -44,18 +46,19 @@
     <!-- END BACKLINK -->
     <!-- BEGIN FORM -->
     <h2 style="text-align: center; margin-bottom: 30px;">Create your own project!</h2>
-    <form style="margin-left: 350px;margin-right: 350px; margin-bottom: 40px;">
+    <div style="margin-left: 350px;margin-right: 350px; margin-bottom: 40px;">
         <div class="form-group">
-            <label for="exampleFormControlInput1">Name of your project</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1">
+            <label for="nameProject">Name of your project</label>
+            <input type="text" class="form-control" id="nameProject">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Resume your project</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label for="resumeProject">Resume your project</label>
+            <textarea class="form-control" id="resumeProject" rows="3"></textarea>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Localisation of your project</label>
-            <select multiple class="form-control" id="exampleFormControlSelect2">
+            <label for="localisationProject">Localisation of your project</label>
+            <select class="form-control" id="localisationProject">
+                <option selected>All around the world</option>
                 <option>Africa</option>
                 <option>Asia</option>
                 <option>Europa</option>
@@ -65,22 +68,25 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlInput2">Volunteers needed</label>
-            <input type="number" class="form-control" id="exampleFormControlInput2">
+            <label for="volunteersProject">Volunteers needed</label>
+            <input type="number" class="form-control" id="volunteersProject">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlInput3">Funds needed</label>
-            <input type="number" class="form-control" id="exampleFormControlInput3">
+            <label for="fundsProject">Funds needed</label>
+            <input type="number" class="form-control" id="fundsProject">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlFile1">Images</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            <label for="imageProject">Images</label>
+            <input type="file" name="imageProject" class="form-control-file" id="imageProject">
         </div>
+        <!-- <form action="/uploadfile" enctype="multipart/form-data" method="POST">
+            <input type="file" name="myFile" />
+            <input type="submit" value="Upload a file" />
+        </form> -->
         <a href="./AllProjects.html" style="margin-left:150px;">Cancel</a>
-        <button type=" button" class="btn btn-primary btn-lg" id="submitProject"
-            style="margin-left:40px;width: 150px; height:50px;">Submit!</button>
-    </form>
-
+        <button type="button" class="btn btn-primary btn-lg" id="submitProject"
+            style="margin-left:40px;width: 150px; height:50px;" onclick="addProject()">Submit</input>
+    </div>
     <!-- END FORM -->
     <!-- END CARDS PROJECTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
