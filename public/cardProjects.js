@@ -1,3 +1,4 @@
+// fetch the server to have data cards and upload them
 fetch('http://localhost:3000/projects')
     .then(res => res.json())
     .then(data => {
@@ -13,6 +14,7 @@ fetch('http://localhost:3000/projects')
     // console.log(data))
     .catch(err => console.log(err))
 
+// function if there is no project: just display text
 const noProject = (textToDisplay) => {
     const anyProject = document.getElementById("anyProject");
     anyProject.innerHTML = "";
@@ -23,7 +25,7 @@ const noProject = (textToDisplay) => {
     anyProject.appendChild(text);
 }
 
-
+// function for create cards with data come from the server & database
 const createCard = (data) => {
     const anyProject = document.getElementById("anyProject");
     anyProject.innerHTML = "";
@@ -62,7 +64,8 @@ const createCard = (data) => {
     button2.type = "button";
     button2.setAttribute("class", "btn btn-primary btn-sm")
     button2.classList.add("card-link");
-    button2.id = "join";
+    button2.setAttribute("onclick", `joinProject("${data.name}")`)
+    button2.id = data.name;
     button2.innerHTML = "Join!";
 
     const button3 = document.createElement("button");
@@ -86,7 +89,7 @@ const createCard = (data) => {
     root.appendChild(div1);
 };
 
-
+// function for filter cards
 const filter = () => {
     const localisation = document.getElementById('localisation').value;
     const cards = document.querySelectorAll('.col');
@@ -111,4 +114,31 @@ const filter = () => {
     if (count == cards.length) {
         noProject(`Any project in ${localisation}!`);
     }
+};
+
+// function for join project
+const joinProject = (name) => {
+    console.log("ok");
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    join = {
+        user: "sam",
+        name: name,
+        date
+    }
+    fetch('http://localhost:3000/joinProject', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(join)
+    })
+        .then(res => res.json())
+        .then(data => {
+            // alert(data.message);
+            const join = document.getElementById(name);
+            join.disabled = true;
+            join.innerHTML = "Joined";
+        })
+        .catch(err => console.log(err))
 }

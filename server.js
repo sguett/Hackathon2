@@ -75,6 +75,25 @@ app.post('/addProject', (req, res) => {
     // res.send(req.body)
 })
 
+app.post('/joinProject', (req, res) => {
+    console.log(req.body);
+    const { user, name, date } = req.body;
+    db('adherents')
+        .insert({
+            user_id: db('users').select('user_id').where('username', '=', user),
+            project_id: db('projects').select('project_id').where('name', '=', name),
+            add_date: date
+        })
+        .then(data => {
+            // console.log(data);
+            res.send({ message: "You join the project! Congrats!" })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
+
 app.listen(3000);
 
 
