@@ -3,8 +3,9 @@ const cors = require('cors');
 const bp = require('body-parser');
 const pws = require('p4ssw0rd');
 const knex = require('knex');
-// const url = require('url');
 const fs = require('fs');
+
+const app = exp();
 
 const db = knex({
     client: 'pg',
@@ -12,12 +13,12 @@ const db = knex({
         host: '127.0.0.1',
         port: '5432',
         user: 'postgres',
-        password: 'postgres2626',
-        database: 'volunteer'
+        password: 'postgres2626', // MODIFY THIS
+        database: 'volunteer' // MODIFY THIS
     }
 });
 
-const app = exp();
+
 
 app.use(exp.static(__dirname + '/public'));
 app.use(bp.urlencoded({ extended: false }));
@@ -35,10 +36,22 @@ app.get('/projects', (req, res) => {
         })
 })
 
+app.get('/infoProject', (req, res) => {
+    db('projects')
+        .select('*')
+        .where('name', '=', req.query.name)
+        .then(data => {
+            // console.log(data);
+            res.send(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
 
 app.post('/addProject', (req, res) => {
     const { name, resume, local, volunteers, funds, image } = req.body;
-    // const image = url.parse(req.body.image, true)
     db('projects')
         .insert({
             name: name,
@@ -48,7 +61,7 @@ app.post('/addProject', (req, res) => {
             needs_volunteers: volunteers,
             localisation: local,
             image: image,
-            creator_id: 2
+            creator_id: 2 // MODIFY THIS
         })
         .then(data => {
             // console.log(data);
@@ -63,3 +76,8 @@ app.post('/addProject', (req, res) => {
 })
 
 app.listen(3000);
+
+
+
+
+

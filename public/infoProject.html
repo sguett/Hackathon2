@@ -7,36 +7,40 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <script src="cardProjects.js"></script>
-    <title>all projects</title>
+    <script src="infoProject.js"></script>
+    <title>create project</title>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
             width: auto;
         }
 
-
-        .cardsProjects {
-            margin-left: 70px;
-            margin-right: 80px;
-        }
-
-        .actions {
+        .card-desc {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            grid-auto-rows: minmax(60px, auto);
-            margin-left: 80px;
-            margin-right: 80px;
-            margin-top: 30px;
-        }
-
-        .card-text {
-            font-size: 85%;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
         }
 
         .btn {
+            width: 100px;
             background-color: #31AABB;
             border: #31AABB;
+        }
+
+        .card1 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            margin: 20px 100px;
+        }
+
+        .card2 {
+            margin: 20px 100px;
+        }
+
+        .card-img {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
         }
     </style>
 </head>
@@ -65,38 +69,18 @@
         </div>
     </nav>
     <!-- END NAVBAR -->
-    <!-- BEGIN FILTERS AND BUTTON ADD PROJECT -->
-    <div class="actions">
-        <div>
-            <label for="localisation">Localisation</label>
-            <select name="localisation" id="localisation" onchange="filter()">
-                <option value="all">All</option>
-                <option value="africa">Africa</option>
-                <option value="asia">Asia</option>
-                <option value="europa">Europa</option>
-                <option value="north america">North America</option>
-                <option value="south america">South America</option>
-                <!-- <option value="other">Other</option> -->
-            </select>
-            <!-- <label for="status" style="margin-left: 10px;" onchange="filter()">Status projects</label>
-            <select name="status" id="status">
-                <option value="all">All</option>
-                <option value="open">Open</option>
-                <option value="pending">Pending</option>
-                <option value="close">Close</option>
-            </select> -->
-        </div>
-        <div>
-            <button type="button" onclick="location.href='createProject.html';" class="btn btn-primary btn-sm"
-                id="newProject" style="margin-left: 195px;">Create
-                a new project</button>
+    <!-- BEGIN BACKLINK -->
+    <a href="./AllProjects.html" style="margin-left: 65px; color: black;">Back to projects</a>
+    <!-- END BACKLINK -->
+    <!-- BEGIN INFO PROJECT -->
+    <div id=root>
+    </div>
+    <div class="col mb-4">
+        <div class="card card2">
+            <h4 style="margin: 20px 350px"><b>DISCUSS WITH THE TEAM</b></h4>
         </div>
     </div>
-    <!-- END FILTERS AND BUTTON ADD PROJECT -->
-    <!-- BEGIN CARDS PROJECTS -->
-    <div id="anyProject"></div>
-    <div class="row row-cols-1 row-cols-md-3 cardsProjects" id="root">
-    </div>
+    <!-- END INFO PROJECT -->
     <!-- END CARDS PROJECTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
