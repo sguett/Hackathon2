@@ -8,6 +8,7 @@ fetch('http://localhost:3000/projects')
             noProject("Any project! Create a new project with the button!");
         }
         data.forEach(el => {
+            // debugger
             createCard(el)
         })
     })
@@ -31,7 +32,11 @@ const createCard = (data) => {
     anyProject.innerHTML = "";
     const root = document.getElementById("root")
     const div1 = document.createElement("div");
-    div1.classList.add("col", "mb-4", data.localisation.toLowerCase());
+    if (data.localisation.split(" ").length > 1) {
+        div1.classList.add("col", "mb-4", data.localisation.replace(" ", "_").toLowerCase());
+    } else {
+        div1.classList.add("col", "mb-4", data.localisation.toLowerCase());
+    }
     const div2 = document.createElement("div");
     div2.classList.add("card");
     const img = document.createElement("img");
@@ -60,27 +65,27 @@ const createCard = (data) => {
     button1.id = "moreInfo";
     button1.innerHTML = "More info";
 
-    const button2 = document.createElement("button");
-    button2.type = "button";
-    button2.setAttribute("class", "btn btn-primary btn-sm")
-    button2.classList.add("card-link");
-    button2.setAttribute("onclick", `joinProject("${data.name}")`)
-    button2.id = data.name;
-    button2.innerHTML = "Join!";
+    // const button2 = document.createElement("button");
+    // button2.type = "button";
+    // button2.setAttribute("class", "btn btn-primary btn-sm")
+    // button2.classList.add("card-link");
+    // button2.setAttribute("onclick", `joinProject("${data.name}")`)
+    // button2.id = data.name;
+    // button2.innerHTML = "Join!";
 
-    const button3 = document.createElement("button");
-    button3.type = "button";
-    button3.setAttribute("class", "btn btn-primary btn-sm")
-    button3.classList.add("card-link");
-    button3.id = "donate";
-    button3.innerHTML = "Donate!";
+    // const button3 = document.createElement("button");
+    // button3.type = "button";
+    // button3.setAttribute("class", "btn btn-primary btn-sm")
+    // button3.classList.add("card-link");
+    // button3.id = "donate";
+    // button3.innerHTML = "Donate!";
 
     div3.appendChild(h5);
     div3.appendChild(h6);
     div3.appendChild(desc);
     div3.appendChild(button1);
-    div3.appendChild(button2);
-    div3.appendChild(button3);
+    // div3.appendChild(button2);
+    // div3.appendChild(button3);
 
     div2.appendChild(img);
     div2.appendChild(div3);
@@ -97,13 +102,12 @@ const filter = () => {
     if (cards.length == 0) {
         noProject("Any project! Create a new project with the button!");
     } else {
-        debugger;
         const anyProject = document.getElementById("anyProject");
         anyProject.innerHTML = "";
         cards.forEach(el => {
             if (localisation.toLowerCase() == "all") {
                 el.style.display = "";
-            } else if (el.classList[2] === localisation.toLowerCase()) {
+            } else if (el.classList[2] === localisation.toLowerCase() || el.classList[2].replace("_", " ") === localisation.toLowerCase()) {
                 el.style.display = "";
             } else {
                 count++;
@@ -115,30 +119,3 @@ const filter = () => {
         noProject(`Any project in ${localisation}!`);
     }
 };
-
-// function for join project
-const joinProject = (name) => {
-    console.log("ok");
-    const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    join = {
-        user: "sam",
-        name: name,
-        date
-    }
-    fetch('http://localhost:3000/joinProject', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(join)
-    })
-        .then(res => res.json())
-        .then(data => {
-            // alert(data.message);
-            const join = document.getElementById(name);
-            join.disabled = true;
-            join.innerHTML = "Joined";
-        })
-        .catch(err => console.log(err))
-}

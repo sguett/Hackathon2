@@ -4,6 +4,7 @@ const bp = require('body-parser');
 const pws = require('p4ssw0rd');
 const knex = require('knex');
 const fs = require('fs');
+const { lemonchiffon } = require('color-name');
 
 const app = exp();
 
@@ -37,12 +38,40 @@ app.get('/projects', (req, res) => {
 })
 
 app.get('/infoProject', (req, res) => {
+    console.log(req.query.name);
     db('projects')
         .select('*')
         .where('name', '=', req.query.name)
         .then(data => {
-            // console.log(data);
-            res.send(data);
+            console.log(data[0]);
+            db('adherents').count('user_id').where('project_id', '=', data[0].project_id)
+                .then(count => {
+                    console.log(count);
+                    if (count.length > 0) {
+                        data.push(count[0])
+                        db('adherents').select('user_id').where({
+                            user_id: 2,
+                            project_id: data[0].project_id
+                        })
+                            .then(user => {
+                                if (user.length == 1) {
+                                    data.push(0)
+                                } else {
+                                    data.push(1)
+                                }
+                                res.send(data);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                    } else {
+                        data.push(0);
+                        data.push(1);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         })
         .catch(err => {
             console.log(err);
