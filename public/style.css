@@ -1,10 +1,10 @@
-body{
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
 }
 
-#root{
-    background-image: url('../ressources/perry-grone-lbLgFFlADrY-unsplash.jpg');
+#root {
+    background-image: url('perry-grone-lbLgFFlADrY-unsplash.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     /* margin-top: 80px; */
@@ -16,7 +16,7 @@ body{
     bottom: 0;
     right: 0;
     position: absolute;
-    z-index: -1; 
+    z-index: -1;
 }
 
 #loginRegister {
@@ -35,11 +35,10 @@ button {
     height: 25px;
 }
 
-
-#lostPassword{
+#lostPassword {
     margin-top: 10px;
 }
 
-#lostPassword:hover{
+#lostPassword:hover {
     cursor: pointer;
 }

@@ -5,40 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>TEST</title>
+    <script src="script.js" type="text/javascript"></script>
+    <title>Volunteers - Login</title>
 </head>
 
 <body>
     <div id="root">
         <h1>The Volunteers</h1>
         <h2>Create or join a project, and contribute to move the world!</h2>
+        <div id="welcome_msg"></div><br><br>
     </div>
     <div id="loginRegister">
         <div id="loginForm">
-            <h2 style="text-align: center;">Login</h2>
-            Username: <br>
-            <input type="text" name="username" id="username1" onkeyup="activeButton1(this)"> <br>
-            Password: <br>
-            <input type="password" name="password" id="password1" onkeyup="activeButton1(this)"> <br>
-            <button disabled name="login" id="login" onclick="login()" style="margin-top: 5px;">Login</button>
-            <div id="lostPassword" style="text-align: center;"><u>Lost your password?</u></div>
-            <div id="root1"></div>
+            <form action="/login" method="post">
+                <h2 style="text-align: center;">Login</h2>
+                Username: <br>
+                <input type="text" name="username" id="username" onkeyup="activeButton1(this)"> <br> Password: <br>
+                <input type="password" name="password" id="password" onkeyup="activeButton1(this)"> <br>
+                <button type="submit" name="login" id="login" style="margin-top: 5px;">Login</button>
+                <div id="lostPassword" style="text-align: center;"><u>Lost your password?</u></div>
+            </form>
         </div>
         <div id="registerForm" style="margin-left: 100px;">
-            <h2 style="text-align: center;">Register</h2>
-            First Name: <br>
-            <input type="text" name="firstName" id="firstName" onkeyup="activeButton2(this)"> <br>
-            Last Name: <br>
-            <input type="text" name="lastName" id="lastName" onkeyup="activeButton2(this)"> <br>
-            Email: <br>
-            <input type="email" name="email" id="email" onkeyup="activeButton2(this)"> <br>
-            Username: <br>
-            <input type="text" name="username2" id="username2" onkeyup="activeButton2(this)"> <br>
-            Password: <br>
-            <input type="password" name="password" id="password2" onkeyup="activeButton2(this)"> <br>
-            <button disabled name="register" id="register" onclick="register()"
-                style="margin-top: 5px;">Register</button>
-            <div id="root2"></div>
+            <form action="/register" method="post">
+                <h2 style="text-align: center;">Register</h2>
+                First Name: <br>
+                <input type="text" name="firstname" id="firstname" onkeyup="activeButton2(this)"> <br> Last Name: <br>
+                <input type="text" name="lastname" id="lastname" onkeyup="activeButton2(this)"> <br> Email: <br>
+                <input type="email" name="email" id="email" onkeyup="activeButton2(this)"> <br> Country: <br>
+                <input type="text" name="country" id="country"> <br> Username: <br>
+                <input type="text" name="username" id="userName" onkeyup="activeButton2(this)"> <br> Password: <br>
+                <input type="password" name="password" id="password2" onkeyup="activeButton2(this)"> <br>
+                <button type="submit" name="register" id="register" style="margin-top: 5px;">Register</button>
+            </form>
         </div>
 </body>
 

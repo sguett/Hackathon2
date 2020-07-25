@@ -74,3 +74,4 @@ create table adherents
 	  REFERENCES users(user_id)
     ON DELETE SET NULL
 )
+
