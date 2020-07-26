@@ -1,5 +1,6 @@
 const addProject = () => {
     const name = document.getElementById("nameProject").value;
+    name.trim();
     const resume = document.getElementById("resumeProject").value;
     const local = document.getElementById("localisationProject").value;
     const volunteers = document.getElementById("volunteersProject").value;
@@ -15,7 +16,7 @@ const addProject = () => {
         image
     }
 
-    fetch('http://localhost:3000/all_projects', {
+    fetch('http://localhost:3000/allprojects', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
