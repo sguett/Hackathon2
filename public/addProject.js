@@ -5,7 +5,7 @@ const addProject = () => {
     const local = document.getElementById("localisationProject").value;
     const volunteers = document.getElementById("volunteersProject").value;
     const funds = document.getElementById("fundsProject").value;
-    const image = "../ressources/" + document.getElementById("imageProject").files[0].name;
+    const image = document.getElementById("imageProject").files[0].name;
 
     project = {
         name,

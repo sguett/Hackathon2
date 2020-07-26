@@ -1,4 +1,6 @@
 // fetch the server to have data cards and upload them
+
+
 fetch('http://localhost:3000/projects')
     .then(res => res.json())
     .then(data => {
@@ -40,7 +42,9 @@ const createCard = (data) => {
     const div2 = document.createElement("div");
     div2.classList.add("card");
     const img = document.createElement("img");
+
     img.setAttribute("src", data.image);
+
     img.classList.add("card-img-top");
 
     const div3 = document.createElement("div");

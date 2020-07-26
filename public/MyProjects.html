@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="myProjects.js"></script>
+    <title>all projects</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            width: auto;
+        }
+
+
+        .cardsProjects {
+            margin-left: 70px;
+            margin-right: 80px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-auto-rows: minmax(60px, auto);
+            margin-left: 80px;
+            margin-right: 80px;
+            margin-top: 30px;
+        }
+
+        .card-text {
+            font-size: 85%;
+        }
+
+        .btn {
+            background-color: #FF4362;
+            border: #FF4362;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- BEGIN NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #FF4362;">
+        <a class="navbar-brand" href="AllProjects.html" style="margin-left: 50px;color: white;"><b>The
+                Volunteers</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav" style="margin-right: 70px;">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: white;">My contributions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/myProjects.html" style="color: white;">My
+                        projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/logout" style="color: white;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+    <!-- BEGIN FILTERS AND BUTTON ADD PROJECT -->
+    <a href="./AllProjects.html" style="margin-left: 65px; color: black;">Back to projects</a>
+
+    <div class="actions">
+        <div>
+            <label for="localisation">Localisation</label>
+            <select name="localisation" id="localisation" onchange="filter()">
+                <option value="all">All</option>
+                <option value="africa">Africa</option>
+                <option value="asia">Asia</option>
+                <option value="europa">Europa</option>
+                <option value="north america">North America</option>
+                <option value="south america">South America</option>
+                <!-- <option value="other">Other</option> -->
+            </select>
+            <!-- <label for="status" style="margin-left: 10px;" onchange="filter()">Status projects</label>
+            <select name="status" id="status">
+                <option value="all">All</option>
+                <option value="open">Open</option>
+                <option value="pending">Pending</option>
+                <option value="close">Close</option>
+            </select> -->
+        </div>
+        <div>
+            <button type="button" onclick="location.href='createProject.html';" class="btn btn-primary btn-sm"
+                id="newProject" style="margin-left: 195px;">Create
+                a new project</button>
+        </div>
+    </div>
+    <!-- END FILTERS AND BUTTON ADD PROJECT -->
+    <!-- BEGIN CARDS PROJECTS -->
+    <div id="anyProject"></div>
+    <div class="row row-cols-1 row-cols-md-3 cardsProjects" id="root">
+    </div>
+    <!-- END CARDS PROJECTS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

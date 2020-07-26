@@ -24,6 +24,8 @@ const db = knex({
 
 
 app.use(exp.static(__dirname + '/public'));
+app.use(exp.static(__dirname + '/ressources'));
+
 app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 app.use(cors());
@@ -110,6 +112,19 @@ app.get('/projects', (req, res) => {
         })
 })
 
+app.get('/myProjects', (req, res) => {
+    console.log(req.session.user);
+    db('projects')
+        .select('*')
+        .where('creator_id', '=', req.session.user.user_id)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
 app.get('/infoProject', (req, res) => {
     console.log(req.query.name);
     db('projects')
@@ -163,7 +178,7 @@ app.post('/addProject', (req, res) => {
             needs_volunteers: volunteers,
             localisation: local,
             image: image,
-            creator_id: 2 // MODIFY THIS
+            creator_id: req.session.user.user_id
         })
         .then(data => {
             // console.log(data);
@@ -179,10 +194,10 @@ app.post('/addProject', (req, res) => {
 
 app.post('/joinProject', (req, res) => {
     console.log(req.body);
-    const { user, name, date } = req.body;
+    const { name, date } = req.body;
     db('adherents')
         .insert({
-            user_id: db('users').select('user_id').where('username', '=', user),
+            user_id: db('users').select('user_id').where('username', '=', req.session.user.username),
             project_id: db('projects').select('project_id').where('name', '=', name),
             add_date: date
         })
@@ -195,6 +210,92 @@ app.post('/joinProject', (req, res) => {
         })
 })
 
+app.post('/donateProject', (req, res) => {
+    console.log(req.body);
+    const { name, donation } = req.body;
+    db('adherents')
+        .select('user_id').where('user_id', '=', req.session.user.user_id)
+        .then(res => {
+            if (res.length == 0) {
+                db('adherents')
+                    .insert({
+                        user_id: db('users').select('user_id').where('username', '=', req.session.user.username),
+                        project_id: db('projects').select('project_id').where('name', '=', name),
+                        amount_given: donation
+                    })
+                    .then(data => {
+                        // console.log(data);
+                        res.send({ message: "You donate for the project! Congrats!" })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+            else {
+                db('adherents')
+                    .insert({
+                        user_id: db('users').select('user_id').where('username', '=', req.session.user.username),
+                        project_id: db('projects').select('project_id').where('name', '=', name),
+                        amount_given: donation
+                    })
+                    .then(data => {
+                        // console.log(data);
+                        res.send({ message: "You donate for the project! Congrats!" })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        })
+
+})
+
+app.get('/forum', (req, res) => {
+    db('projects')
+        .select('project_id')
+        .where('name', '=', req.query.name)
+        .then(data => {
+            db('forum').select('*').where('project_id', "=", data[0].project_id).orderBy('msg_id')
+                .then(data => {
+                    res.send(data)
+                })
+        })
+        .catch(err => { console.log(err) })
+})
+app.post('/forum', (req, res) => {
+    console.log(req.query.name);
+    const { message } = req.body;
+    db('projects')
+        .select('project_id')
+        .where('name', '=', req.query.name)
+        .then(data => {
+            console.log("data from forum post", data);
+            db('forum').insert({
+                user_id: req.session.user.user_id,
+                project_id: data[0].project_id,
+                message: message
+            })
+                .then(data => {
+                    console.log(data);
+                    res.send({ message: "Message added successfully !" })
+
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+        .catch(err => { console.log(err) })
+})
+
+app.get('/getusername', (req, res) => {
+    db('users').select('username').where('user_id', '=', req.query.id)
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
 
 /////////////////////////
 
@@ -224,6 +325,7 @@ app.get('/logout', (req, res) => {
 app.use(function (req, res, next) {
     res.status(404).send("Sorry can't find that!")
 })
+
 
 
 

@@ -1,4 +1,5 @@
 const name = document.location.search;
+
 fetch(`http://localhost:3000/infoProject${name}`)
     .then(res => res.json())
     .then(data => {
@@ -63,7 +64,16 @@ const createInfo = (data, activeBtn) => {
     const button3 = document.createElement("button");
     button3.type = "button";
     button3.setAttribute("class", "btn btn-primary btn-sm")
-    button3.classList.add("card-link");
+    button3.setAttribute("onclick", "openDonateWindow()")
+    button3.id = data[0].name;
+    // if (activeBtn == 1) {
+    //     button3.disabled = false;
+    //     button3.innerHTML = "Join!";
+    // } else if (activeBtn == 0) {
+    //     button3.disabled = true;
+    //     button3.innerHTML = "Joined";
+    // }
+
     button3.id = "donate";
     button3.innerHTML = "Donate!";
 
@@ -112,7 +122,7 @@ const joinProject = (name) => {
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     join = {
-        user: "sam",
+        // user: "sam",
         name: name,
         date
     }
@@ -137,3 +147,78 @@ const joinProject = (name) => {
         })
         .catch(err => console.log(err))
 }
+
+// function for donate an amount to project
+const openDonateWindow = () => {
+    console.log("donate initialize");
+    const modal = document.getElementById("myModal");
+    modal.style.display = "block";
+}
+
+const donateProject = () => {
+    const name = document.location.search;
+    const donation = document.getElementById('donateUser').value;
+    donate = {
+        name: name,
+        donation: donation
+    }
+    fetch('http://localhost:3000/donateProject', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(donate)
+    })
+        .then(res => res.json())
+        .then(data => {
+            fetch(`http://localhost:3000/infoProject${document.location.search}`)
+                .then(res => res.json())
+                .then(data => {
+                    createInfo(donate, 1);
+                })
+                .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+
+    const modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+const forum = () => {
+    const name = document.location.search;
+    const message = document.getElementById('message').value;
+    fetch(`http://localhost:3000/forum${name}`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ message })
+    })
+    document.location.reload(true);
+}
+
+fetch(`http://localhost:3000/forum${name}`)
+    .then(res => res.json())
+    .then(data => {
+        // console.log(data);
+        createforum(data);
+    })
+    .catch(err => console.log(err))
+
+const createforum = (data) => {
+    const div = document.getElementById("forum")
+    const list = document.createElement("ul");
+    data.forEach(msg => {
+        const li = document.createElement("li");
+        let id = msg.user_id;
+        fetch(`http://localhost:3000/getusername?id=${id}`)
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data);
+                li.innerHTML = `${data[0].username} : ${msg.message}`;
+                list.appendChild(li);
+                div.appendChild(list);
+            })
+    })
+}
+
