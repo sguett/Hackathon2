@@ -4,8 +4,20 @@ const bp = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const DB = require('./db');
+const knex = require('knex');
 
 const app = exp();
+
+const db = knex({
+    client: 'pg',
+    connection: {
+        host: '127.0.0.1',
+        port: '5432',
+        user: 'postgres',
+        password: 'alex1997',
+        database: 'volunteer'
+    }
+});
 
 // set our application port
 app.set('port', 9000);
@@ -110,14 +122,40 @@ app.route('/all_projects')
     .get((req, res) => {
         if (req.session.user && req.cookies.user_sid) {
             console.log('Good user session')
-            res.sendFile(__dirname + '/public/AllProjects.html');
+            db('projects')
+                .select('*')
+                .then(data => {
+                    res.write(data);
+                    res.end();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         } else {
-            console.log("IN ALL PROJECT ROUTE")
             res.redirect('/login');
         }
     })
     .post((req, res) => {
-
+        const { name, resume, local, volunteers, funds, image } = req.body;
+        DB.db('projects')
+            .insert({
+                name: name,
+                description: resume,
+                status: 'open',
+                funds: funds,
+                needs_volunteers: volunteers,
+                localisation: local,
+                image: image,
+                creation_date: new Date(),
+                creator_id: req.sessin.user.id // MODIFY THIS
+            })
+            .then(data => {
+                // console.log(data);
+                res.send(req.body)
+            })
+            .catch(err => {
+                console.log(err);
+            })
     });
 
 app.route('/user_profile')
@@ -128,6 +166,20 @@ app.route('/user_profile')
             res.redirect('/login');
         }
     });
+
+app.get('/infoProject', (req, res) => {
+    DB.db('projects')
+        .select('*')
+        .where('name', '=', req.query.name)
+        .then(data => {
+            // console.log(data);
+            res.send(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
 
 // route for user logout
 app.get('/logout', (req, res) => {

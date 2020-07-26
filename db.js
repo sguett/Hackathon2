@@ -61,7 +61,20 @@ const createUser = async({ firstname, lastname, email, country, city, street, us
         });
 }
 
+
+const showProjects = () => {
+    return db('projects')
+        .select('*')
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 module.exports = {
     findUser,
-    createUser
+    createUser,
+    showProjects,
+    db
 }
