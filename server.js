@@ -4,6 +4,9 @@ const bp = require('body-parser');
 const pws = require('p4ssw0rd');
 const knex = require('knex');
 const fs = require('fs');
+const DB = require('./db');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 const app = exp();
 
@@ -24,6 +27,77 @@ app.use(exp.static(__dirname + '/public'));
 app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 app.use(cors());
+app.use(cookieParser());
+
+app.use(
+    session({
+        key: 'user_sid',
+        secret: 'some_secret_key',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: 1000000
+        }
+    })
+);
+
+
+const sessionChecker = (req, res, next) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.redirect('/projects');
+    } else {
+        next();
+    }
+};
+
+app.get('/', sessionChecker, (req, res) => {
+    res.redirect('/login');
+});
+
+app.get('/login', sessionChecker, (req, res) => {
+    console.log("login");
+    res.sendFile(__dirname + '/public/login.html');
+})
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    console.log(username);
+    //selecting the corresponding username in the users table and checking if the password is the same
+    DB.findUser(req.body)
+        .then(user => {
+            if (!user) {
+                console.log("BAD USER")
+                res.redirect('/login');
+            } else {
+                console.log(`GOOD USER`);
+                console.log(user[0].username);
+                req.session.user = user[0];
+                //req.session.user = user[0];
+                // res.redirect('/projects');
+                // res.sendFile(__dirname + '/public/AllProjects.html');
+                res.writeHead(302, { 'Location': 'http://localhost:3000/AllProjects.html' });
+                res.end();
+            }
+        })
+        .catch(error => {
+            res.redirect('/login');
+        });
+})
+
+app.get('/register', sessionChecker, (req, res) => {
+    res.sendFile(__dirname + '/public/login.html');
+})
+app.post('/register', (req, res) => {
+    const { firstname, lastname, email, country, city, street, username, password } = req.body;
+    console.log(req.body);
+    DB.createUser(req.body)
+        .then(user => {
+            res.redirect('/login');
+        })
+        .catch(error => {
+            console.log(error)
+            res.redirect('/register');
+        });
+})
 
 app.get('/projects', (req, res) => {
     db('projects')
@@ -37,12 +111,40 @@ app.get('/projects', (req, res) => {
 })
 
 app.get('/infoProject', (req, res) => {
+    console.log(req.query.name);
     db('projects')
         .select('*')
         .where('name', '=', req.query.name)
         .then(data => {
-            // console.log(data);
-            res.send(data);
+            console.log(data[0]);
+            db('adherents').count('user_id').where('project_id', '=', data[0].project_id)
+                .then(count => {
+                    console.log(count);
+                    if (count.length > 0) {
+                        data.push(count[0])
+                        db('adherents').select('user_id').where({
+                            user_id: 2,
+                            project_id: data[0].project_id
+                        })
+                            .then(user => {
+                                if (user.length == 1) {
+                                    data.push(0)
+                                } else {
+                                    data.push(1)
+                                }
+                                res.send(data);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                    } else {
+                        data.push(0);
+                        data.push(1);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         })
         .catch(err => {
             console.log(err);
@@ -92,6 +194,37 @@ app.post('/joinProject', (req, res) => {
             console.log(err);
         })
 })
+
+
+/////////////////////////
+
+app.get('/', sessionChecker, (req, res) => {
+    res.redirect('/login');
+});
+
+
+app.get('/user_profile', (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.sendFile(__dirname + '/public/user_profile.html');
+    } else {
+        res.redirect('/login');
+    }
+})
+
+// route for user logout
+app.get('/logout', (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.clearCookie('user_sid');
+        res.redirect('/');
+    } else {
+        res.redirect('/login');
+    }
+})
+
+app.use(function (req, res, next) {
+    res.status(404).send("Sorry can't find that!")
+})
+
 
 
 app.listen(3000);
