@@ -44,8 +44,18 @@ const createInfo = (data, activeBtn) => {
     volunteers.style.marginBottom = "10px";
 
     const funds = document.createElement("h6");
-    funds.innerHTML = "Needs " + data[0].funds + "$!";
+    // funds.innerHTML = "Needs " + data[0].funds + "$!";
+    if (data[0].actual_funds === null) {
+        funds.innerHTML = "0/" + data[0].funds + "$ donations recolted!";
+    } else {
+        funds.innerHTML = data[0].actual_funds + "/" + data[0].funds + "$ donations recolted!";
+    }
     funds.setAttribute("style", "font-weight: bold");
+    // const total_fund = document.createElement("h5");
+    // total_fund.classList.add("card-text");
+    // total_fund.innerHTML = `Received amount: ${data[0].actual_funds}`;
+
+
 
     const button2 = document.createElement("button");
     button2.type = "button";
@@ -118,7 +128,7 @@ const displayImages = (data) => {
 
 // function for join project
 const joinProject = (name) => {
-    console.log("ok");
+    // console.log("ok");
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     join = {
@@ -156,7 +166,7 @@ const openDonateWindow = () => {
 }
 
 const donateProject = () => {
-    const name = document.location.search;
+    const name = document.getElementsByClassName('card-title')[0].innerText;
     const donation = document.getElementById('donateUser').value;
     donate = {
         name: name,
@@ -171,15 +181,16 @@ const donateProject = () => {
     })
         .then(res => res.json())
         .then(data => {
+            // alert(data[0]);
             fetch(`http://localhost:3000/infoProject${document.location.search}`)
                 .then(res => res.json())
                 .then(data => {
-                    createInfo(donate, 1);
+                    // console.log(data);
+                    createInfo(data, 0);
                 })
                 .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
-
     const modal = document.getElementById("myModal");
     modal.style.display = "none";
 }

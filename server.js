@@ -7,6 +7,7 @@ const fs = require('fs');
 const DB = require('./db');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const { isNull } = require('util');
 
 const app = exp();
 
@@ -90,7 +91,7 @@ app.get('/register', sessionChecker, (req, res) => {
 })
 app.post('/register', (req, res) => {
     const { firstname, lastname, email, country, city, street, username, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     DB.createUser(req.body)
         .then(user => {
             res.redirect('/login');
@@ -113,12 +114,30 @@ app.get('/projects', (req, res) => {
 })
 
 app.get('/myProjects', (req, res) => {
-    console.log(req.session.user);
-    db('projects')
-        .select('*')
-        .where('creator_id', '=', req.session.user.user_id)
+    // console.log(req.session.user);
+    db('adherents')
+        .select('project_id')
+        .where('user_id', '=', req.session.user.user_id)
         .then(data => {
-            res.send(data);
+            // console.log(data.json());
+            // console.log(data);
+            // data[0].json();
+            let project = [];
+            data.forEach(el => {
+                project.push(el.project_id)
+            });
+            // console.log(project);
+            db('projects')
+                .select('*')
+                .where('project_id', 'in', project)
+                .orWhere('creator_id', '=', req.session.user.user_id)
+                .then(results => {
+                    res.send(results);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
         })
         .catch(err => {
             console.log(err);
@@ -126,22 +145,23 @@ app.get('/myProjects', (req, res) => {
 })
 
 app.get('/infoProject', (req, res) => {
-    console.log(req.query.name);
+    // console.log(req.query.name);
     db('projects')
         .select('*')
         .where('name', '=', req.query.name)
         .then(data => {
-            console.log(data[0]);
+            // console.log(data[0]);
             db('adherents').count('user_id').where('project_id', '=', data[0].project_id)
                 .then(count => {
                     console.log(count);
                     if (count.length > 0) {
                         data.push(count[0])
                         db('adherents').select('user_id').where({
-                            user_id: 2,
+                            user_id: req.session.user.user_id,
                             project_id: data[0].project_id
                         })
                             .then(user => {
+                                console.log(user);
                                 if (user.length == 1) {
                                     data.push(0)
                                 } else {
@@ -213,41 +233,70 @@ app.post('/joinProject', (req, res) => {
 app.post('/donateProject', (req, res) => {
     console.log(req.body);
     const { name, donation } = req.body;
+    //check if the user is an adherent or not
     db('adherents')
-        .select('user_id').where('user_id', '=', req.session.user.user_id)
-        .then(res => {
-            if (res.length == 0) {
+        .select('user_id', 'project_id', 'amount_given').where({
+            user_id: req.session.user.user_id,
+            project_id: db('projects').select('project_id').where('name', '=', name)
+        })
+        .then(adherent => {
+            if (adherent.length == 0) {
+                //create a new adherent entry with the donation given
                 db('adherents')
                     .insert({
-                        user_id: db('users').select('user_id').where('username', '=', req.session.user.username),
+                        user_id: req.session.user.user_id,
                         project_id: db('projects').select('project_id').where('name', '=', name),
                         amount_given: donation
                     })
                     .then(data => {
-                        // console.log(data);
-                        res.send({ message: "You donate for the project! Congrats!" })
+                        //update the actual funds of the project
+                        db('projects').select('actual_funds').where('name', '=', name)
+                            .then(data => {
+                                // console.log(data);
+                                let project_amount = 0;
+                                if (data[0].actual_funds == null) {
+                                    project_amount = parseInt(donation);
+                                } else {
+                                    project_amount = parseInt(data[0].actual_funds) + parseInt(donation);
+                                }
+                                // console.log(project_amount);
+
+                                db('projects').where('name', '=', name).update('actual_funds', project_amount)
+                                    .then(data => { res.send({ message: "Thank you for this wonderful donation !" }) })
+                            })
                     })
-                    .catch(err => {
-                        console.log(err);
-                    })
-            }
-            else {
+                    .catch(e => console.log(e))
+            } else {
+                //means this user is already a member or donated before
+                //we need to update the total amount he actually donated
+                //and the new total amount that the project got
+                console.log(adherent[0].amount_given == null);
+                let new_amount = 0;
+                if (adherent[0].amount_given == null) {
+                    new_amount = parseInt(donation);
+                } else {
+                    new_amount = parseInt(adherent[0].amount_given) + parseInt(donation);
+                    // console.log(new_amount);
+                }
                 db('adherents')
-                    .insert({
-                        user_id: db('users').select('user_id').where('username', '=', req.session.user.username),
-                        project_id: db('projects').select('project_id').where('name', '=', name),
-                        amount_given: donation
-                    })
+                    // .where('project_id', '=', adherent[0].project_id)
+                    .update('amount_given', new_amount)
                     .then(data => {
-                        // console.log(data);
-                        res.send({ message: "You donate for the project! Congrats!" })
+                        db('projects').select('actual_funds').where('name', '=', name)
+                            .then(data => {
+                                let project_amount = 0;
+                                if (data[0].actual_funds == null) {
+                                    project_amount = parseInt(donation);
+                                } else {
+                                    project_amount = parseInt(data[0].actual_funds) + parseInt(donation);
+                                }
+                                db('projects').where('name', '=', name).update('actual_funds', project_amount)
+                                    .then(data => { res.send({ message: "Thank you for this wonderful donation !" }) })
+                            })
                     })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                    .catch(e => console.log(e))
             }
         })
-
 })
 
 app.get('/forum', (req, res) => {
@@ -263,20 +312,20 @@ app.get('/forum', (req, res) => {
         .catch(err => { console.log(err) })
 })
 app.post('/forum', (req, res) => {
-    console.log(req.query.name);
+    // console.log(req.query.name);
     const { message } = req.body;
     db('projects')
         .select('project_id')
         .where('name', '=', req.query.name)
         .then(data => {
-            console.log("data from forum post", data);
+            // console.log("data from forum post", data);
             db('forum').insert({
                 user_id: req.session.user.user_id,
                 project_id: data[0].project_id,
                 message: message
             })
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     res.send({ message: "Message added successfully !" })
 
                 })
